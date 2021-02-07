@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="listLogStyle">
+  <div class="listLogStyle">
       {{listLog}}
     </div>
     <div class="inputNumDiv">
@@ -8,24 +8,20 @@
       <input class="inputTextStyle" id="text2" type="text" v-model="num2" />
     </div>
     <ListTable ref="listtable" :num1="this.num1" :num2="this.num2" :numList="this.numList"></ListTable>
-    <!-- <list-table :numList="this.numList"></list-table> -->
     <div class="inputNumDiv" v-if="this.numList.length > 0">
-      <button class="buttonStyle" type="button" @click="fourMul()">4的倍数</button>
-      <button class="buttonStyle" type="button" @click="fiveMul()">5的倍数</button>
+      <button
+      :class="[this.$refs.listtable.four ? 'buttonStyleOn' : 'buttonStyle']"
+      type="button" @click="fourMul()">4的倍数</button>
+      <button
+      :class="[this.$refs.listtable.five ? 'buttonStyleOn' : 'buttonStyle']"
+      type="button" @click="fiveMul()">5的倍数</button>
     </div>
   </div>
-<!--  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div> -->
 </template>
 
 <script>
-// @ is an alias to /src
-// import HelloWorld from '@/components/HelloWorld.vue'
 import store from '@/store'
 import ListTable from '../components/ListTable.vue'
-var _ = require('lodash')
 
 export default {
   name: 'Home',
@@ -35,7 +31,8 @@ export default {
       num1: '',
       num2: '',
       numList: [],
-      listLog: '请在下列两个文本框中输入一对正确的正整数范围'
+      listLog: '请在下列两个文本框中输入一对正确的正整数范围',
+      buttonStyle: ''
     }
   },
   watch: {
@@ -90,14 +87,6 @@ export default {
       }
       this.listLog = '输入已完成，即将生成对应表格'
       this.createList()
-      // var vm = this
-      // axios.get('https://yesno.wtf/api')
-      //   .then(function (response) {
-      //     vm.listLog = _.capitalize(response.data.listLog)
-      //   })
-      //   .catch(function (error) {
-      //     vm.listLog = 'error!' + error
-      //   })
     },
     createList: function () {
       var n1 = parseInt(this.num1)

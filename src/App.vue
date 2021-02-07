@@ -42,38 +42,52 @@ td {
   text-align: center;
 }
 .buttonStyle {
-  margin: 0 50px 0 50px;
-  width: 100px;
-  font-size: 15px;
-  background-color: #e8e8e8;
-  border-radius: 12px;
-  box-shadow: 0 6px 8px 0 rgba(0,0,0,0.2);
-  -webkit-transition-duration: 0.4s; /* Safari */
-  transition-duration: 0.4s;
+   position: relative;
+   text-decoration: none;
+   background-color: #e8e8e8;
+   font-family: 黑体;
+   font-weight: 100px;
+   font-size: 15px;
+   margin: 0 50px 0 50px;
+   border-radius: 8px;
+   box-shadow: 0px 10px 0px #e8e8e8, 0px 16px 15px rgba(0, 0, 0, .7);
+   text-align: center;
+   -webkit-transition: all .1s ease;
+   -moz-transition: all .1s ease;
+   transition: all .1s ease;
 }
-.buttonStyle:hover {
-    box-shadow: 0 12px 26px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
-    color: purple;
-    text-decoration: underline;
-    font-weight: bold;
+.buttonStyle:active{
+ box-shadow: 0px 3px 0px #000000, 0px 3px 6px rgba(0, 0, 0, .9);
+ position: relative;
+ top: 6px;
 }
-/* #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+.buttonStyle:hover{
+  color: purple;
+  text-decoration: underline;
 }
-
-#nav {
-  padding: 30px;
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
-} */
+.buttonStyleOn {
+   position: relative;
+   text-decoration: none;
+   background-color: #e8e8e8;
+   font-family: 黑体;
+   font-weight: 100px;
+   font-size: 15px;
+   margin: 0 50px 0 50px;
+   border-radius: 8px;
+   box-shadow: 0px 3px 0px #000000, 0px 3px 6px rgba(0, 0, 0, .9);
+   top: 6px;
+   text-align: center;
+   -webkit-transition: all .1s ease;
+   -moz-transition: all .1s ease;
+   transition: all .1s ease;
+}
+.buttonStyleOn:hover{
+  color: purple;
+  text-decoration: underline;
+}
+.buttonStyleOn:active{
+ box-shadow: 0px 3px 0px #000000, 0px 3px 6px rgba(0, 0, 0, .9);
+ position: relative;
+ top: 6px;
+}
 </style>

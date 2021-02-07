@@ -2,6 +2,7 @@
 const path =  require('path');
 const IS_PROD = ['production', 'prod'].includes(process.env.NODE_ENV);
 const resolve = (dir) => path.join(__dirname, dir);
+const webpack = require('webpack')
 module.exports = {
     publicPath: './',  // 公共路径
     indexPath: 'index.html' , // 相对于打包路径index.html的路径
@@ -40,6 +41,15 @@ module.exports = {
                     }
                 }
         }
+    },
+    configureWebpack: {
+        plugins: [
+            new webpack.ProvidePlugin({
+                $: "jquery",
+                jQuery: "jquery",
+                "windows.jQuery": "jquery"
+            })
+        ]
     },
     devServer: {
             overlay: { // 让浏览器 overlay 同时显示警告和错误
