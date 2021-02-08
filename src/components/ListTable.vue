@@ -71,7 +71,7 @@ export default {
       var n = newNum
       this.number = num
       if (n !== '') {
-        if (/^\d+$/.test(n)) {
+        if (/^-?\d+$/.test(n)) {
           n = parseInt(n)
           this.isFlag = false
           document.getElementById('tab').rows[rowKey].cells[numKey].childNodes[0].innerText = n

@@ -4,7 +4,7 @@
       <transition name="drop">
         <div class="dialog-content" v-if="this.isShow">
           <div class="dialog_head_back">
-              <slot name="header">您当前正在修改数字为 {{baseNum}} 的值</slot>
+              <slot name="header">您当前正在修改数字为{{baseNum}}的值</slot>
           </div>
           <div class="dialog_main">
               请在此处输入一个整数数字(回车确认,点空白取消)<br />

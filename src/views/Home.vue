@@ -7,6 +7,11 @@
       <input class="inputTextStyle" id="text1" type="text" v-model="num1" />
       <input class="inputTextStyle" id="text2" type="text" v-model="num2" />
     </div>
+    <div class="inputNumDiv">
+      <button
+      class="buttonStyle"
+      type="button" @click="randomList()">随机生成100个整数</button>
+    </div>
     <ListTable ref="listtable" :num1="this.num1" :num2="this.num2" :numList="this.numList"></ListTable>
     <div class="inputNumDiv" v-if="this.numList.length > 0">
       <button
@@ -22,6 +27,7 @@
 <script>
 import store from '@/store'
 import ListTable from '../components/ListTable.vue'
+import axios from 'axios'
 
 export default {
   name: 'Home',
@@ -32,7 +38,12 @@ export default {
       num2: '',
       numList: [],
       listLog: '请在下列两个文本框中输入一对正确的正整数范围',
-      buttonStyle: ''
+      buttonStyle: '',
+      musicDemo: {
+        name: '',
+        picurl: '',
+        url: ''
+      }
     }
   },
   watch: {
@@ -100,7 +111,21 @@ export default {
     },
     fiveMul: function () {
       this.$refs.listtable.chickFiveMultiple()
+    },
+    randomList: function () {
+      this.numList = []
+      var vm = this
+      axios.get('/news/index')
+        .then(function (res) {
+          vm.numList = vm.numList.concat(res.data.randomList)
+          vm.listLog = '已成功生成100个随机整数'
+      })
     }
+    // for (var i = 0; i < 100; i++) {
+    //   randomNum =  Math.floor(Math.random()*10000)+1
+    //   randomList.push(randomNum)
+    // this.numList = this.numList.concat(randomList)
+    // this.listLog = '已成功生成100个随机正整数'
   },
   components: {
     ListTable: ListTable
@@ -109,5 +134,63 @@ export default {
 </script>
 
 <style scoped lang="scss">
-
+.listLogStyle {
+  text-align: center;
+}
+.inputNumDiv {
+  text-align: center;
+}
+.inputTextStyle {
+  margin: 0 50px 0 50px;
+  text-align: center;
+}
+.buttonStyle {
+   position: relative;
+   text-decoration: none;
+   background-color: #e8e8e8;
+   font-family: 黑体;
+   font-weight: 100px;
+   font-size: 15px;
+   margin: 0 50px 0 50px;
+   border-radius: 8px;
+   box-shadow: 0px 10px 0px #e8e8e8, 0px 16px 15px rgba(0, 0, 0, .7);
+   text-align: center;
+   -webkit-transition: all .1s ease;
+   -moz-transition: all .1s ease;
+   transition: all .1s ease;
+}
+.buttonStyle:active{
+ box-shadow: 0px 3px 0px #000000, 0px 3px 6px rgba(0, 0, 0, .9);
+ position: relative;
+ top: 6px;
+}
+.buttonStyle:hover{
+  color: purple;
+  text-decoration: underline;
+}
+.buttonStyleOn {
+   position: relative;
+   text-decoration: none;
+   background-color: #e8e8e8;
+   font-family: 黑体;
+   font-weight: 100px;
+   font-size: 15px;
+   margin: 0 50px 0 50px;
+   border-radius: 8px;
+   box-shadow: 0px 3px 0px #000000, 0px 3px 6px rgba(0, 0, 0, .9);
+   top: 6px;
+   text-align: center;
+   -webkit-transition: all .1s ease;
+   -moz-transition: all .1s ease;
+   transition: all .1s ease;
+}
+.buttonStyleOn:hover{
+  color: purple;
+  text-decoration: underline;
+}
+.buttonStyleOn:active{
+ box-shadow: 0px 3px 0px #000000, 0px 3px 6px rgba(0, 0, 0, .9);
+ position: relative;
+ top: 6px;
+}
 </style>
