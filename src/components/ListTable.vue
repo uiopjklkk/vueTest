@@ -13,6 +13,14 @@
           </td>
         </tr>
       </table>
+      <div class="pageNumber" v-if="this.numList.length > 0">
+        <a :class="[this.nowPage > 0 ? 'pageNeLs' : 'noPageNels']"
+        @click="lastPage()">[上一页]</a>
+        当前页数: {{nowPage + 1}} / {{this.$parent.pageList}}
+        <a :class="[this.$parent.pageList > this.nowPage+1 ? 'pageNeLs' : 'noPageNels']"
+        @click="nextPage()">[下一页]</a>
+        <br />输入跳转:
+      </div>
       <InputTable ref="inputtable"></InputTable>
     </div>
   </div>
@@ -33,18 +41,18 @@ export default {
     },
     // 原数字数组
     numList: {
-      type: Array,
-      default: function () {
-        this.numList.push(0)
-      }
+      type: Array
+    },
+    pageMaxNum: {
+      default: 100
     }
   },
   data () {
     return {
-      subn: 0,
       isFlag: true,
       four: false,
-      five: false
+      five: false,
+      nowPage: 0
     }
   },
   computed: {
@@ -52,11 +60,11 @@ export default {
       var array = []
       var index = 0
       // var len = 0
-      if (this.numList.length === 0) {
+      if (this.numList.length === 0 || this.numList[this.nowPage].length === 0) {
         return
       }
-      while (index < this.numList.length) {
-        array.push(this.numList.slice(index, index += 10))
+      while (index < this.numList[this.nowPage].length) {
+        array.push(this.numList[this.nowPage].slice(index, index += 10))
       }
       while ((array[(array.length - 1)]).length < 10) {
         (array[(array.length - 1)]).push('')
@@ -74,7 +82,6 @@ export default {
         if (/^-?\d+$/.test(n)) {
           n = parseInt(n)
           this.isFlag = false
-          document.getElementById('tab').rows[rowKey].cells[numKey].childNodes[0].innerText = n
           this.checkTableNumList(num, n, rowKey, numKey)
           this.$refs.inputtable.isShow = false
           this.$refs.inputtable.newNum = ''
@@ -92,7 +99,7 @@ export default {
     checkTableNumList: function (num, n, rowKey, numKey) {
       this.tableNumList[rowKey][numKey] = n
       var numStr = '' + rowKey + numKey
-      this.numList[parseInt(numStr)] = n
+      this.numList[this.nowPage][parseInt(numStr)] = n
       this.isFlag = true
     },
     chickFourMultiple: function () {
@@ -107,6 +114,20 @@ export default {
         this.five = true
       } else {
         this.five = false
+      }
+    },
+    nextPage: function () {
+      if (this.$parent.pageList > this.nowPage+1) {
+        this.nowPage++
+      } else {
+        return
+      }
+    },
+    lastPage: function () {
+      if (this.nowPage > 0) {
+        this.nowPage--
+      } else {
+        return
       }
     }
   },
@@ -126,5 +147,21 @@ export default {
 }
 .firstRow{
   background-color: #bdb8b7;
+}
+.pageNumber {
+  font-size: 18px;
+  font-family: '楷体';
+  margin-left: -40px;
+}
+.pageNeLs {
+  font-weight: bold;
+}
+.noPageNels {
+  font-weight: normal;
+  font-size: 18px;
+  color: #c2c2c2;
+}
+.noPageNels:hover {
+  text-decoration: none;
 }
 </style>

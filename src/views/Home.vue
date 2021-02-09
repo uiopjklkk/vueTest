@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="divFather">
   <div class="listLogStyle">
       {{listLog}}
     </div>
@@ -12,8 +12,8 @@
       class="buttonStyle"
       type="button" @click="randomList()">随机生成100个整数</button>
     </div>
-    <ListTable ref="listtable" :num1="this.num1" :num2="this.num2" :numList="this.numList"></ListTable>
-    <div class="inputNumDiv" v-if="this.numList.length > 0">
+    <ListTable ref="listtable" :num1="this.num1" :num2="this.num2" :numList="this.numList" :pageMaxNum="this.pageMaxNum"></ListTable>
+    <div class="inputNumDiv2" v-if="this.numList.length > 0">
       <button
       :class="[this.$refs.listtable.four ? 'buttonStyleOn' : 'buttonStyle']"
       type="button" @click="fourMul()">4的倍数</button>
@@ -39,11 +39,8 @@ export default {
       numList: [],
       listLog: '请在下列两个文本框中输入一对正确的正整数范围',
       buttonStyle: '',
-      musicDemo: {
-        name: '',
-        picurl: '',
-        url: ''
-      }
+      pageMaxNum: 100,
+      pageList: 0
     }
   },
   watch: {
@@ -83,8 +80,8 @@ export default {
         document.getElementById('text2').focus()
         return
       }
-      var n1 = parseInt(this.num1)
-      var n2 = parseInt(this.num2)
+      let n1 = parseInt(this.num1)
+      let n2 = parseInt(this.num2)
       this.num1 = n1
       this.num2 = n2
       if (n1 >= n2) {
@@ -96,15 +93,32 @@ export default {
         document.getElementById('text1').focus()
         return
       }
-      this.listLog = '输入已完成，即将生成对应表格'
+      this.listLog = '输入已完成，即将生成对应表格(每页最多生成'+this.pageMaxNum+'个数字)'
       this.createList()
     },
     createList: function () {
-      var n1 = parseInt(this.num1)
-      var n2 = parseInt(this.num2)
-      for (var i = n1; i <= n2; i++) {
-        this.numList.push(i)
+      this.$refs.listtable.nowPage = 0
+      this.pageList = 0
+      let n1 = parseInt(this.num1)
+      let n2 = parseInt(this.num2)
+      let pageList = parseInt((n2 - n1 + 1) / this.pageMaxNum)
+      if ((n2 - n1 + 1) % this.pageMaxNum > 0) {
+        pageList++
       }
+      this.pageList = pageList
+      this.numList = new Array()
+      for (let i = 0; i <= pageList; i++) {
+        this.numList[i] = new Array()
+        this.numList.push([i])
+        for (; n1 <= n2; n1++) {
+          this.numList[i].push(n1)
+          if (this.numList[i].length === this.pageMaxNum) {
+            n1++
+            break
+          }
+        }
+      }
+      //for (let i = 0;)
     },
     fourMul: function () {
       this.$refs.listtable.chickFourMultiple()
@@ -114,10 +128,12 @@ export default {
     },
     randomList: function () {
       this.numList = []
+      this.pageList = 1
+      this.$refs.listtable.nowPage = 0
       var vm = this
       axios.get('/news/index')
         .then(function (res) {
-          vm.numList = vm.numList.concat(res.data.randomList)
+          vm.numList.push(res.data.randomList.slice(0, res.data.randomList.length))
           vm.listLog = '已成功生成100个随机整数'
       })
     }
@@ -134,15 +150,24 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.listLogStyle {
+.divFather {
   text-align: center;
 }
+.listLogStyle {
+  margin-left: -20px;
+  margin-right: -20px;
+}
 .inputNumDiv {
-  text-align: center;
+  margin-left: -20px;
+  margin-right: -20px;
+}
+.inputNumDiv2 {
+  margin-left: -20px;
+  margin-right: -20px;
+  margin-top: -40px;
 }
 .inputTextStyle {
   margin: 0 50px 0 50px;
-  text-align: center;
 }
 .buttonStyle {
    position: relative;
@@ -154,7 +179,6 @@ export default {
    margin: 0 50px 0 50px;
    border-radius: 8px;
    box-shadow: 0px 10px 0px #e8e8e8, 0px 16px 15px rgba(0, 0, 0, .7);
-   text-align: center;
    -webkit-transition: all .1s ease;
    -moz-transition: all .1s ease;
    transition: all .1s ease;
@@ -179,7 +203,6 @@ export default {
    border-radius: 8px;
    box-shadow: 0px 3px 0px #000000, 0px 3px 6px rgba(0, 0, 0, .9);
    top: 6px;
-   text-align: center;
    -webkit-transition: all .1s ease;
    -moz-transition: all .1s ease;
    transition: all .1s ease;

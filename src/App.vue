@@ -18,15 +18,15 @@ a:hover {
   text-decoration: underline;
 }
 table {
-  text-align: center;
   width: 100%;
   font-family: 黑体;
   font-size: 18px;
-  padding: 0px;
   border-width: 3px;
   border-color: #6f6f6f;
   border-collapse: collapse;
-  box-shadow: 0px 2px 6px rgba(0,0,0,0.9)
+  box-shadow: 0px 2px 6px rgba(0,0,0,0.9);
+  margin-left: -20px;
+  margin-right: -20px;
 }
 td {
   width: 10%
