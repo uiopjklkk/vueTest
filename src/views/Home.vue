@@ -56,10 +56,13 @@ export default {
     }
   },
   created: function () {
-    this.debouncedGetAnswer = _.debounce(this.getAnswer, 500)
+    this.debouncedGetAnswer = _.debounce(this.setTableList, 500)
   },
   methods: {
-    getAnswer: function () {
+    /**
+     * 设置表格范围
+     */
+    setTableList: function () {
       if (this.num1 === '') {
         this.listLog = '请填写第一个数值.(数值不能为空)'
         document.getElementById('text1').focus()
@@ -96,6 +99,11 @@ export default {
       this.listLog = '输入已完成，即将生成对应表格(每页最多生成'+this.pageMaxNum+'个数字)'
       this.createList()
     },
+    /**
+     * 生成表格
+     * pageList: 表格总页数
+     * nowPage: 表格当前页数
+     */
     createList: function () {
       this.$refs.listtable.nowPage = 0
       this.pageList = 0
@@ -105,28 +113,37 @@ export default {
       if ((n2 - n1 + 1) % this.pageMaxNum > 0) {
         pageList++
       }
+      // 初始只生成一个表格
       this.pageList = pageList
       this.numList.push([])
       for (; n1 <= n2; n1++) {
         this.numList[0].push(n1)
         if (this.numList[0].length === this.pageMaxNum) {
-          n1++
           break
         }
       }
-      //for (let i = 0;)
     },
+    /**
+     * 点击4的倍数按钮
+     */
     fourMul: function () {
-      this.$refs.listtable.chickFourMultiple()
+      this.$refs.listtable.clickFourMultiple() // 调用子组件方法
     },
+    /**
+     * 点击5的倍数按钮
+     */
     fiveMul: function () {
-      this.$refs.listtable.chickFiveMultiple()
+      this.$refs.listtable.clickFiveMultiple()
     },
+    /**
+     * 点击随机生成100个整数按钮
+     */
     randomList: function () {
       this.numList = []
       this.pageList = 1
       this.$refs.listtable.nowPage = 0
       var vm = this
+      // 使用axios调用接口
       axios.get('/news/index')
         .then(function (res) {
           vm.numList.push(res.data.randomList.slice(0, res.data.randomList.length))
@@ -139,6 +156,7 @@ export default {
     // this.numList = this.numList.concat(randomList)
     // this.listLog = '已成功生成100个随机正整数'
   },
+  // 组件
   components: {
     ListTable: ListTable
   }

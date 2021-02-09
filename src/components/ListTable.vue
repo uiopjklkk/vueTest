@@ -101,20 +101,21 @@ export default {
       this.numList[this.nowPage][parseInt(numStr)] = n
       this.isFlag = true
     },
-    chickFourMultiple: function () {
+    clickFourMultiple: function () {
       if (this.four === false) {
         this.four = true
       } else {
         this.four = false
       }
     },
-    chickFiveMultiple: function () {
+    clickFiveMultiple: function () {
       if (this.five === false) {
         this.five = true
       } else {
         this.five = false
       }
     },
+    // 点击下一页
     nextPage: function () {
       if (this.$parent.pageList > this.nowPage+1) {
         this.nowPage++
@@ -133,6 +134,7 @@ export default {
         return
       }
     },
+    // 点击上一页
     lastPage: function () {
       if (this.nowPage > 0) {
         this.nowPage--

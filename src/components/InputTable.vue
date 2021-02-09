@@ -37,6 +37,7 @@ export default {
     this.enterClick()
   },
   methods: {
+    // 点击表格中对应数字
     openTable (baseNum, rowKey, numKey) {
       this.baseNum = baseNum
       this.rowKey = rowKey
