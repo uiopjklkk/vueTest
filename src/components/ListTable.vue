@@ -19,7 +19,6 @@
         当前页数: {{nowPage + 1}} / {{this.$parent.pageList}}
         <a :class="[this.$parent.pageList > this.nowPage+1 ? 'pageNeLs' : 'noPageNels']"
         @click="nextPage()">[下一页]</a>
-        <br />输入跳转:
       </div>
       <InputTable ref="inputtable"></InputTable>
     </div>
