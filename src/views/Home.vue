@@ -106,16 +106,12 @@ export default {
         pageList++
       }
       this.pageList = pageList
-      this.numList = new Array()
-      for (let i = 0; i <= pageList; i++) {
-        this.numList[i] = new Array()
-        this.numList.push([i])
-        for (; n1 <= n2; n1++) {
-          this.numList[i].push(n1)
-          if (this.numList[i].length === this.pageMaxNum) {
-            n1++
-            break
-          }
+      this.numList.push([])
+      for (; n1 <= n2; n1++) {
+        this.numList[0].push(n1)
+        if (this.numList[0].length === this.pageMaxNum) {
+          n1++
+          break
         }
       }
       //for (let i = 0;)

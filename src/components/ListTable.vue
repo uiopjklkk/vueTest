@@ -118,6 +118,17 @@ export default {
     nextPage: function () {
       if (this.$parent.pageList > this.nowPage+1) {
         this.nowPage++
+        if (this.numList.length === this.nowPage) {
+          this.numList.push([])
+          var n1 = parseInt(this.$parent.num1) + this.nowPage * this.pageMaxNum
+          var n2 = parseInt(this.$parent.num2)
+          for (; n1 <= n2; n1++) {
+            this.numList[this.nowPage].push(n1)
+            if (this.numList[this.nowPage].length === this.pageMaxNum) {
+              break
+            }
+          }
+        }
       } else {
         return
       }
