@@ -3,14 +3,14 @@
       <div class="dialog-cover back" v-if="this.isShow" @click="closeInput()"></div>
       <transition name="drop">
         <div class="dialog-content" v-if="this.isShow">
-          <div class="dialog_head_back">
+          <div class="dialog-head-back">
               <slot name="header">您当前正在修改数字为{{baseNum}}的值</slot>
           </div>
-          <div class="dialog_main">
+          <div class="dialog-main">
               请在此处输入一个整数数字(回车确认,点空白取消)<br />
               <input type="text" id="inputText" v-model="newNum" />
           </div>
-          <div class="foot_close">
+          <div class="foot-close">
               <button id="dialogYes" @click="enterInput()" @keyup.enter="enterClick()">确定</button>
               <button id="dialogNo" @click="closeInput()">取消</button>
           </div>
@@ -21,7 +21,7 @@
 
 <script>
 export default {
-  name: 'InputTable',
+  name: 'HomeListDialog',
   props: {
   },
   data () {
@@ -49,7 +49,7 @@ export default {
       this.isShow = false
     },
     enterInput () {
-      this.$parent.updateNum(this.newNum, this.baseNum, this.rowKey, this.numKey)
+      this.$emit('updateNum', this.$data)
     },
     enterClick () {
       document.onkeydown = e =>{
@@ -113,7 +113,7 @@ export default {
     padding: 0px;
     box-shadow: 0px 10px 30px rgba(0,0,0,0.9)
   }
-  .dialog_head_back {
+  .dialog-head-back {
     padding: 0px;
     margin-top: 0px;
     margin-bottom: 15px;
@@ -124,22 +124,22 @@ export default {
     border-bottom:1px solid #a7a39f;
     background-color: #ececec;
   }
-  .dialog_main {
+  .dialog-main {
     padding: 0px;
     margin-top: 25px;
     margin-bottom: 10px;
     font-size: 10px;
     color: #b1b1b1;
   }
-  .dialog_main input {
+  .dialog-main input {
     width: 200px;
     height: 15px;
   }
-  .foot_close {
+  .foot-close {
     padding: 0px;
     margin-top: 35px;
   }
-  .foot_close button {
+  .foot-close button {
     background:hsl(101, 22%, 80%);
     height:35px;
     width:70px;
@@ -160,7 +160,7 @@ export default {
     text-shadow: rgba(255,255,255,.5) 0 1px 0;
     transition: all 1s;
   }
-  .foot_close button:hover {
+  .foot-close button:hover {
     background-color: #009e00;
   }
 </style>

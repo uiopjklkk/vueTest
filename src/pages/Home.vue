@@ -1,24 +1,29 @@
 <template>
-  <div class="divFather">
-  <div class="listLogStyle">
-      {{listLog}}
+  <div class="contant">
+    <div class="contant-list">
+       {{listLog}}
     </div>
-    <div class="inputNumDiv">
-      <input class="inputTextStyle" id="text1" type="text" v-model="num1" />
-      <input class="inputTextStyle" id="text2" type="text" v-model="num2" />
+    <div class="contant-input">
+      <input class="input-text" id="text1" type="text" v-model="num1" />
+      <input class="input-text" id="text2" type="text" v-model="num2" />
     </div>
-    <div class="inputNumDiv">
+    <div class="contant-input">
       <button
-      class="buttonStyle"
+      class="button"
       type="button" @click="randomList()">随机生成100个整数</button>
     </div>
-    <ListTable ref="listtable" :num1="this.num1" :num2="this.num2" :numList="this.numList" :pageMaxNum="this.pageMaxNum"></ListTable>
-    <div class="inputNumDiv2" v-if="this.numList.length > 0">
+    <HomeList ref="homelist"
+    :num1="this.num1" :num2="this.num2" :numList="this.numList"
+    :pageList="this.pageList"
+    :pageMaxNum="this.pageMaxNum"
+    :refreshList="this.refreshList"
+    :isFour="this.isFour" :isFive="this.isFive"></HomeList>
+    <div class="contant-mul" v-if="this.numList.length > 0">
       <button
-      :class="[this.$refs.listtable.four ? 'buttonStyleOn' : 'buttonStyle']"
+      :class="[this.isFour ? 'button-on' : 'button']"
       type="button" @click="fourMul()">4的倍数</button>
       <button
-      :class="[this.$refs.listtable.five ? 'buttonStyleOn' : 'buttonStyle']"
+      :class="[this.isFive ? 'button-on' : 'button']"
       type="button" @click="fiveMul()">5的倍数</button>
     </div>
   </div>
@@ -26,10 +31,14 @@
 
 <script>
 import store from '@/store'
-import ListTable from '../components/ListTable.vue'
+import HomeList from './HomeList.vue'
 import axios from 'axios'
 
 export default {
+  // 组件
+  components: {
+    HomeList: HomeList
+  },
   name: 'Home',
   store,
   data () {
@@ -40,23 +49,27 @@ export default {
       listLog: '请在下列两个文本框中输入一对正确的正整数范围',
       buttonStyle: '',
       pageMaxNum: 100,
-      pageList: 0
+      pageList: 0,
+      isFour: false,
+      isFive: false,
+      nowPage: 0,
+      refreshList: false
     }
   },
   watch: {
     num1: function (newNum1, oldNum1) {
       this.listLog = '正在输入第一个数值中..'
-      this.debouncedGetAnswer()
+      this.debouncedGetNumber()
       this.numList.length = 0
     },
     num2: function (newNum2, oldNum2) {
       this.listLog = '正在输入第二个数值中..'
-      this.debouncedGetAnswer()
+      this.debouncedGetNumber()
       this.numList.length = 0
     }
   },
   created: function () {
-    this.debouncedGetAnswer = _.debounce(this.setTableList, 500)
+    this.debouncedGetNumber = _.debounce(this.setTableList, 500)
   },
   methods: {
     /**
@@ -105,7 +118,11 @@ export default {
      * nowPage: 表格当前页数
      */
     createList: function () {
-      this.$refs.listtable.nowPage = 0
+      if (this.refreshList == false) {
+        this.refreshList = true
+      } else {
+        this.refreshList = false
+      }
       this.pageList = 0
       let n1 = parseInt(this.num1)
       let n2 = parseInt(this.num2)
@@ -127,13 +144,23 @@ export default {
      * 点击4的倍数按钮
      */
     fourMul: function () {
-      this.$refs.listtable.clickFourMultiple() // 调用子组件方法
+      if (this.isFour === false) {
+        this.isFour = true
+      } else {
+        this.isFour = false
+      }
+      //this.$refs.homelist.clickFourMultiple() // 调用子组件方法
     },
     /**
      * 点击5的倍数按钮
      */
     fiveMul: function () {
-      this.$refs.listtable.clickFiveMultiple()
+      if (this.isFive === false) {
+        this.isFive = true
+      } else {
+        this.isFive = false
+      }
+      //this.$refs.homelist.clickFiveMultiple()
     },
     /**
      * 点击随机生成100个整数按钮
@@ -141,7 +168,11 @@ export default {
     randomList: function () {
       this.numList = []
       this.pageList = 1
-      this.$refs.listtable.nowPage = 0
+      if (this.refreshList == false) {
+        this.refreshList = true
+      } else {
+        this.refreshList = false
+      }
       var vm = this
       // 使用axios调用接口
       axios.get('/news/index')
@@ -155,35 +186,31 @@ export default {
     //   randomList.push(randomNum)
     // this.numList = this.numList.concat(randomList)
     // this.listLog = '已成功生成100个随机正整数'
-  },
-  // 组件
-  components: {
-    ListTable: ListTable
   }
 }
 </script>
 
 <style scoped lang="scss">
-.divFather {
+.contant {
   text-align: center;
 }
-.listLogStyle {
+.contant-list {
   margin-left: -20px;
   margin-right: -20px;
 }
-.inputNumDiv {
+.contant-input {
   margin-left: -20px;
   margin-right: -20px;
 }
-.inputNumDiv2 {
+.contant-mul {
   margin-left: -20px;
   margin-right: -20px;
   margin-top: -40px;
 }
-.inputTextStyle {
+.input-text {
   margin: 0 50px 0 50px;
 }
-.buttonStyle {
+.button {
    position: relative;
    text-decoration: none;
    background-color: #e8e8e8;
@@ -197,16 +224,16 @@ export default {
    -moz-transition: all .1s ease;
    transition: all .1s ease;
 }
-.buttonStyle:active{
+.button-random:active{
  box-shadow: 0px 3px 0px #000000, 0px 3px 6px rgba(0, 0, 0, .9);
  position: relative;
  top: 6px;
 }
-.buttonStyle:hover{
+.button-random:hover{
   color: purple;
   text-decoration: underline;
 }
-.buttonStyleOn {
+.button-on {
    position: relative;
    text-decoration: none;
    background-color: #e8e8e8;
@@ -221,11 +248,11 @@ export default {
    -moz-transition: all .1s ease;
    transition: all .1s ease;
 }
-.buttonStyleOn:hover{
+.button-on:hover{
   color: purple;
   text-decoration: underline;
 }
-.buttonStyleOn:active{
+.button-on:active{
  box-shadow: 0px 3px 0px #000000, 0px 3px 6px rgba(0, 0, 0, .9);
  position: relative;
  top: 6px;

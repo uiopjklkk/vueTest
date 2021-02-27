@@ -6,7 +6,7 @@ import _ from 'lodash'
 import axios from 'axios'
 
 Vue.config.productionTip = false
-require('./mock.js')
+require('./modules/mock.js')
 
 new Vue({
   router,
